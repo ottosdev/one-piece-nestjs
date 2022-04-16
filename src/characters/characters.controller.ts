@@ -24,12 +24,12 @@ export class CharactersController {
   }
 
   @Get()
-  findAll() {
+  async findAll(): Promise<CharacterEntity[]> {
     return this.charactersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<CharacterEntity> {
     return this.charactersService.findOne(id);
   }
 
@@ -46,4 +46,3 @@ export class CharactersController {
     return this.charactersService.remove(+id);
   }
 }
-
