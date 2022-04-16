@@ -8,7 +8,7 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import { hashSync } from 'bcrypt';
-@Entity({name: 'tb_users'})
+@Entity({ name: 'tb_users' })
 export class UsersEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -35,6 +35,6 @@ export class UsersEntity {
 
   @BeforeInsert()
   hashPassword() {
-    this.password = hashSync(this.password, 8);
+    this.password = hashSync(this.password, 10);
   }
 }

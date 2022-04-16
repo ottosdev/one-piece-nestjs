@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FindOneOptions, ObjectID } from 'typeorm';
+import { FindConditions, FindOneOptions, ObjectID } from 'typeorm';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
 import { UsersEntity } from './entity/users.entity';
@@ -24,29 +24,30 @@ export class UsersService {
   }
 
   async findOneOrFail(
-    id?: string | number | Date | ObjectID,
-    options?: FindOneOptions<UsersEntity>,
+    conditions: FindConditions<UsersEntity>,
+    options?: FindOneOptions<UsersEntity>
   ) {
     try {
-      return await this.userRepository.findOneOrFail(id, options);
+      return await this.userRepository.findOneOrFail(conditions, options);
     } catch (error) {
       throw new NotFoundException(error.message);
     }
   }
 
-  async store(dto: CreateUserDTO) {
+  async createUser(dto: CreateUserDTO) {
     const user = this.userRepository.create(dto);
     return this.userRepository.save(user);
   }
 
-  async update(id: string, user: UpdateUserDTO) {
-    const updateUser = await this.findOneOrFail(id);
+  async updateUser(id: string, user: UpdateUserDTO) {
+    const updateUser = await this.findOneOrFail({id});
     this.userRepository.merge(updateUser, user);
     return this.userRepository.save(updateUser);
   }
+  
 
-  async destroy(id: string) {
-    await this.findOneOrFail(id);
+  async deleteUser(id: string) {
+    await this.findOneOrFail({id});
     this.userRepository.softDelete(id);
   }
 }

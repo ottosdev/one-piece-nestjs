@@ -9,9 +9,11 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/user-decorator';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { ShowUserDTO } from './dto/show-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
 import { UsersEntity } from './entity/users.entity';
 import { UsersService } from './users.service';
@@ -20,34 +22,37 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private userService: UsersService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  async index(): Promise<UsersEntity[]> {
+  async index(@GetUser() user: UsersEntity): Promise<UsersEntity[]> {
+    console.log(user);
     return this.userService.findAll();
   }
 
   @Post()
   async store(@Body() dto: CreateUserDTO): Promise<UsersEntity> {
-    return this.userService.store(dto);
+    return this.userService.createUser(dto);
   }
 
   @Get(':id')
   async show(
     @Param('id', new ParseUUIDPipe()) id: string,
   ): Promise<UsersEntity> {
-    return this.userService.findOneOrFail(id);
+    return this.userService.findOneOrFail({ id });
   }
 
   @Put(':id')
+  @HttpCode(HttpStatus.CREATED)
   async update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() dto: UpdateUserDTO,
-  ): Promise<ShowUserDTO> {
-    return this.userService.update(id, dto);
+  ): Promise<UsersEntity> {
+    return this.userService.updateUser(id, dto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async destroy(@Param('id', new ParseUUIDPipe()) id: string): Promise<void> {
-    return this.userService.destroy(id);
+    return this.userService.deleteUser(id);
   }
 }
