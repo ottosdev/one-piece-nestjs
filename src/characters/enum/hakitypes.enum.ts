@@ -1,5 +1,5 @@
-export enum HakiTypes {
-  "KENBUNSHOUKU_HAKI",
-  "BUSOSHOKU_HAKI",
-  "HAOSHOKU_HAKI",
+export enum HakiTypesEnum {
+  KENBUNSHOUKU = 'Kenbunshouku',
+  BUSOSHOKU = 'Busoshoku',
+  HAOSHOKU = 'Haoshoku',
 }

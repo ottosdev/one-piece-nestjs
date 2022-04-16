@@ -5,7 +5,6 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,10 +14,8 @@ import { CharacterEntity } from './character.entity';
 @Entity({ name: 'tb_description' })
 export class DescriptionEntity {
   @PrimaryGeneratedColumn('uuid')
-  description_id: string;
-  @Column()
-  name: string;
-
+  id: string;
+  
   @Column()
   age: string;
 
@@ -33,6 +30,15 @@ export class DescriptionEntity {
     name: 'character_id',
   })
   character: CharacterEntity;
+
+  @Column({name: "character_id"})
+  character_id: string;
+
+  @Column({
+    type: "enum",
+    enum: RoleEnum
+  })
+  role: RoleEnum
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

@@ -1,4 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { ExeptionsMessage } from 'src/utils/messages';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { CharacterEntity } from './entities/character.entity';
@@ -9,24 +15,57 @@ import { DescriptionRepository } from './repository/description.repository';
 export class CharactersService {
   constructor(
     private readonly characterRepository: CharactersRepository,
-    private readonly des: DescriptionRepository,
+    private readonly descriptionRepo: DescriptionRepository,
   ) {}
 
   async create(
     createCharacterDto: CreateCharacterDto,
   ): Promise<CharacterEntity> {
-   
-    const character = this.characterRepository.create(createCharacterDto)
+    const { name } = createCharacterDto;
+    const getCharacter = await this.characterRepository.findOne({
+      where: { name },
+    });
+
+    if (getCharacter) {
+      throw new HttpException(
+        'Character already exists',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const character = this.characterRepository.create(createCharacterDto);
 
     return this.characterRepository.save(character);
   }
 
-  findAll() {
-    return `This action returns all characters`;
+  async findAll() {
+    try {
+      const characters = await this.characterRepository.find();
+
+      return characters;
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} character`;
+  async findOne(id: string): Promise<CharacterEntity> {
+    try {
+      const character = await this.characterRepository.findOne(id);
+
+      if (!character) {
+        throw new HttpException('None', HttpStatus.NOT_FOUND);
+      }
+      return character;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw new HttpException({ message: error.message }, error.getStatus());
+      }
+
+      throw new HttpException(
+        'Something wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   update(id: number, updateCharacterDto: UpdateCharacterDto) {
