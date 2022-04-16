@@ -5,6 +5,10 @@ import { passwordRegex } from "src/utils/regres";
 
 export class CreateUserDTO {
 
+  
+  @IsNotEmpty()
+  username: string;
+
   @IsNotEmpty()
   firstName: string;
 

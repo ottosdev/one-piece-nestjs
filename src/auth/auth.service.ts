@@ -19,10 +19,10 @@ export class AuthService {
     };
   }
 
-  async validateUser(email: string, password: string) {
+  async validateUser(username: string, password: string) {
     let user: UsersEntity;
     try {
-      user = await this.userService.findOneOrFail({ email });
+      user = await this.userService.findOneOrFail({ username });
     } catch (error) {
       return null;
     }

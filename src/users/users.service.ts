@@ -7,14 +7,12 @@ import { UsersRepository } from './repository/users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private userRepository: UsersRepository,
-  ) {}
+  constructor(private userRepository: UsersRepository) {}
 
   async findAll() {
     try {
       const users: UsersEntity[] = await this.userRepository.find({
-        select: ['id', 'firstName', 'lastName', 'email'],
+        select: ['id', 'username', 'firstName', 'lastName', 'email'],
       });
 
       return users;
@@ -25,7 +23,7 @@ export class UsersService {
 
   async findOneOrFail(
     conditions: FindConditions<UsersEntity>,
-    options?: FindOneOptions<UsersEntity>
+    options?: FindOneOptions<UsersEntity>,
   ) {
     try {
       return await this.userRepository.findOneOrFail(conditions, options);
@@ -40,14 +38,13 @@ export class UsersService {
   }
 
   async updateUser(id: string, user: UpdateUserDTO) {
-    const updateUser = await this.findOneOrFail({id});
+    const updateUser = await this.findOneOrFail({ id });
     this.userRepository.merge(updateUser, user);
     return this.userRepository.save(updateUser);
   }
-  
 
   async deleteUser(id: string) {
-    await this.findOneOrFail({id});
+    await this.findOneOrFail({ id });
     this.userRepository.softDelete(id);
   }
 }

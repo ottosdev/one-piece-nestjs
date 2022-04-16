@@ -1,0 +1,11 @@
+export enum RoleEnum {
+  CAPTAIN,
+  SWORDMAN,
+  COOKER,
+  DOCTOR,
+  SHOOTER,
+  ARCHEOLOGIST,
+  NAVIGATOR,
+  MUSICIAN,
+  CARPENTER,
+}
