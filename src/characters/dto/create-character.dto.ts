@@ -4,7 +4,6 @@ import { DescriptionDTO } from './description.dto';
 
 export class CreateCharacterDto {
 
-  
   @IsNotEmpty()
   name: string;
   

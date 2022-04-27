@@ -4,6 +4,7 @@ import { CharactersController } from './characters.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CharactersRepository } from './repository/characters.repository';
 import { DescriptionRepository } from './repository/description.repository';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports:[TypeOrmModule.forFeature([CharactersRepository,DescriptionRepository])],

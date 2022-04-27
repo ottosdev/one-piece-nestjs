@@ -1,15 +1,21 @@
-# Description
+# Sobre
 ```
-Piece project é uma aplicaçao para mostrar alguns dados do anime one piece com a finalidade
-de praticar o framework Nestjs aplicando alguns conceitos basicos como criaçao de crud, conexão com banco e autenticacao JWT.
+Piece project é uma aplicaçao onde retornar dados do anime one piece com a finalidade
+de praticar o framework Nestjs e aprender conceitos de backend. No intutido de criar um CRUD com relacionamentos, autenticação JWT, 
+conexão com o banco de dados, utilizaçao de variaveis globais (.env)
+
 ```
-## Installation
+## Instalação
 
 ```bash
 $ yarn install
+$ Crie um arquivo .env e adicione as mesmas chaves que estao no arquivo de exemplo
+$ Adicione as configuraçoes do seu banco e gere uma secret-key
+$ Para gerar a secret-key use: "openssl rand -base64 32"
+$ Inicie a aplicaçao com: "yarn start:dev"
 ```
 
-## Running the app
+## Iniciando o app
 
 ```bash
 # development
@@ -22,7 +28,7 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
-## Test
+## Testes
 
 ```bash
 # unit tests
@@ -64,5 +70,17 @@ $ yarn add bcrypt @types/bcrypt
 ```bash
 # terminal
 Digite: $ openssl rand -base64 32
+
+```
+
+## Relations
+
+```bash
+# OnetoOne
+Onde uma relação contem em que X contem apenas uma instancia de Y e Y contem apenas uma instancia de X. 
+Um exemplo no projeto seria um Character (Personagem) pode ter apenas uma unica Description (descrição).
+
+
+# OneToMany
 
 ```
